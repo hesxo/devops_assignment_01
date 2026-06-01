@@ -8,8 +8,8 @@ RUN npm ci --omit=dev
 COPY src ./src
 
 ENV PORT=3000
-ENV DATA_DIR=/app/data
+ENV FILE_PATH=/app/data/data.txt
 
 EXPOSE 3000
 
-CMD ["node", "src/server.js"]
+CMD ["node", "src/index.js"]
