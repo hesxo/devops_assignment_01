@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: devops-node-api-ingress
+  namespace: devops-sandbox
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-asthrahealthtech
 spec:

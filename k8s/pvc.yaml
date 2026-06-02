@@ -2,6 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: devops-node-api-pvc
+  namespace: devops-sandbox
 spec:
   accessModes:
     - ReadWriteOnce
