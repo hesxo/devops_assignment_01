@@ -1,12 +1,15 @@
+version: "3.9"
+
 services:
   app:
     build: .
+    container_name: devops-node-api
     ports:
-      - "${PORT:-3000}:3000"
+      - "3000:3000"
     env_file:
       - .env
     environment:
       FILE_PATH: /app/data/data.txt
     volumes:
       - ./data:/app/data
-    restart: unless-stopped
+    restart: always

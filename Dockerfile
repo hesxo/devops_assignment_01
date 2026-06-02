@@ -2,13 +2,14 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+COPY package*.json ./
+RUN npm ci --omit=dev && npm cache clean --force
 
 COPY src ./src
 
-ENV PORT=3000
-ENV FILE_PATH=/app/data/data.txt
+RUN mkdir -p /app/data
+
+ENV NODE_ENV=production PORT=3000 FILE_PATH=/app/data/data.txt
 
 EXPOSE 3000
 
