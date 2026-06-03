@@ -1,0 +1,46 @@
+replicaCount: 1
+
+image:
+  repository: harbor.asthrahealthtech.com/devops-sandbox/devops-node-api
+  tag: v2
+  pullPolicy: Always
+
+imagePullSecrets:
+  - name: harbor-regcred
+
+containerPort: 3000
+
+service:
+  name: devops-node-api-service
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+pvc:
+  create: false
+  name: devops-node-api-pvc
+  storage: 10Gi
+  accessMode: ReadWriteOnce
+  storageClassName: hcloud-volumes
+  mountPath: /app/data
+
+env:
+  PORT: "3000"
+  FILE_PATH: /app/data/data.txt
+
+secret:
+  name: devops-node-api-db-secret
+  DB_HOST: asthra-dev-master-server.cluster.asthrahealthtech.com
+  DB_PORT: "30432"
+  DB_NAME: devops_sandbox
+  DB_USER: devops_sandbox
+  DB_PASSWORD: "sandb0x#26"
+  DB_SSL: "false"
+
+ingress:
+  enabled: true
+  name: devops-node-api-ingress
+  className: traefik
+  host: hasal-devops-node-api.internal.asthrahealthtech.com
+  tlsSecretName: devops-node-api-tls
+  clusterIssuer: letsencrypt-asthrahealthtech

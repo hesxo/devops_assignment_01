@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-node-api
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: devops-node-api
+  template:
+    metadata:
+      labels:
+        app: devops-node-api
+    spec:
+      imagePullSecrets:
+{{- range .Values.imagePullSecrets }}
+        - name: {{ .name }}
+{{- end }}
+      containers:
+        - name: devops-node-api
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.secret.name }}
+          env:
+            - name: PORT
+              value: {{ .Values.env.PORT | quote }}
+            - name: FILE_PATH
+              value: {{ .Values.env.FILE_PATH | quote }}
+          volumeMounts:
+            - name: data-volume
+              mountPath: {{ .Values.pvc.mountPath }}
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.name }}
