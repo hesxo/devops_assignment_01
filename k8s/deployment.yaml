@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: devops-node-api
-  namespace: devops-sandbox
 spec:
   replicas: 1
   selector:
@@ -13,27 +12,20 @@ spec:
       labels:
         app: devops-node-api
     spec:
+      imagePullSecrets:
+        - name: harbor-regcred
       containers:
         - name: devops-node-api
-          image: harbor.asthrahealthtech.com/devops-sandbox/devops-node-api:v1
+          image: harbor.asthrahealthtech.com/devops-sandbox/devops-node-api:v2
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: devops-node-api-db-secret
           env:
             - name: PORT
               value: "3000"
-            - name: DB_HOST
-              value: "asthra-dev-master-server.cluster.asthrahealthtech.com"
-            - name: DB_PORT
-              value: "30432"
-            - name: DB_NAME
-              value: "devops_sandbox"
-            - name: DB_USER
-              value: "devops_sandbox"
-            - name: DB_PASSWORD
-              value: "sandb0x#26"
-            - name: DB_SSL
-              value: "false"
             - name: FILE_PATH
               value: "/app/data/data.txt"
           volumeMounts:
