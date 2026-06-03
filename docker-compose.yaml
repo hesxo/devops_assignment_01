@@ -1,3 +1,4 @@
+# Local dev only. Production deploy: helm upgrade --install (see helm/devops-node-api).
 version: "3.9"
 
 services:

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: devops-node-api
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -13,9 +14,7 @@ spec:
         app: devops-node-api
     spec:
       imagePullSecrets:
-{{- range .Values.imagePullSecrets }}
-        - name: {{ .name }}
-{{- end }}
+        - name: {{ .Values.imagePullSecret }}
       containers:
         - name: devops-node-api
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

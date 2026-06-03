@@ -1,12 +1,12 @@
-{{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.ingress.name }}
+  name: devops-node-api-ingress
+  namespace: {{ .Values.namespace }}
   annotations:
-    cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer | quote }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.issuer }}
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
+  ingressClassName: traefik
   rules:
     - host: {{ .Values.ingress.host }}
       http:
@@ -21,5 +21,4 @@ spec:
   tls:
     - hosts:
         - {{ .Values.ingress.host }}
-      secretName: {{ .Values.ingress.tlsSecretName }}
-{{- end }}
+      secretName: {{ .Values.ingress.tlsSecret }}
